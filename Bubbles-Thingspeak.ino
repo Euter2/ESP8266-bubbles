@@ -49,7 +49,7 @@ void loop()
 
 void bubble() 
 {
-    if(millis() - timeDebounce >= bubbleDebounceInterval)
+    if(millis() - timeDebounce >= bubbleDebounceInterval) //overflow proof debounce
       {
         timeDebounce=millis();
         bubbleCounter++; 
