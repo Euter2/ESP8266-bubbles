@@ -4,11 +4,11 @@
 #include <DallasTemperature.h>
 
 // wifi connection related variables
-const char* ssid     = "XXX"; //<-- setup required!!!
-const char* password = "XXX"; //<-- setup required!!!
+const char* ssid     = "xxx"; //<-- setup required!!!
+const char* password = "xxx"; //<-- setup required!!!
 const char* host = "api.thingspeak.com";
-const char* thingspeak_key = "XXX"; //<-- setup required!!!
-const long updatePeriod = 1*60*1000; //<-- setup required!!!
+const char* thingspeak_key = "xxx"; //<-- setup required!!!
+const long updatePeriod = 60*60*1000; //<-- setup required!!!
 
 // buubble detection related variables
 const int bubblePin = 5;
@@ -19,7 +19,7 @@ unsigned long timeDebounce = 0;
 //temperature detection related variables
 const int tempPin = 4;
 float temp = 0.0;
-const float offset = -4.0; //<-- setup required!!!
+const float offset = 1.0; //<-- setup required!!!
 OneWire oneWire(tempPin);
 DallasTemperature sensor(&oneWire);
 
@@ -39,7 +39,8 @@ void setup()
     t.every(updatePeriod, sendBubbles);
     //wifi start
     WiFi.hostname("BeerSensor"); //<-- setup required!!!
-    wifiConnect();   
+    wifiConnect();
+    sendBubbles();//initial temperature reading    
 }
 
 void loop() 
@@ -66,8 +67,10 @@ void sendBubbles()
   Serial.print("Bubbles per minute: ");
   Serial.println(bubbleCounter);
   //read value from temp sensor with calibration offset
-  sensor.requestTemperaturesByIndex(0);
-  temp = sensor.getTempCByIndex(0) + offset;
+  do{
+      sensor.requestTemperaturesByIndex(0);
+      temp = sensor.getTempCByIndex(0) + offset;
+    }while(temp==85.0); //first dummy reading protection
   //serial temp output
   Serial.print("Temperature: ");
   Serial.println(temp);
