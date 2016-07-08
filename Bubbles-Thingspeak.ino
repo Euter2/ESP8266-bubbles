@@ -13,7 +13,7 @@ const long updatePeriod = 60*60*1000; //<-- setup required!!!
 // buubble detection related variables
 const int bubblePin = 5;
 int bubbleCounter = 0;   
-const int bubbleDebounceInterval = 100; //<-- setup required!!!
+const int bubbleDebounceInterval = 20; //<-- setup required!!!
 unsigned long timeDebounce = 0;
 
 //temperature detection related variables
